@@ -71,6 +71,8 @@ function background.processCommand(text)
         end
 
         background.addPrint(tostring(math.random(min, max - 1)))
+    elseif text == "get-help" then
+        background.addPrint("You can find help at: https://github.com/workingCode403/terminal-space/blob/main/tutorial.md")
     end
 end
 
@@ -100,7 +102,7 @@ end
 function background.draw()
     local font = love.graphics.newFont("CourierPrime.ttf")
     local scale = 1.5
-    love.graphics.setColor(0.012, 0.882, 0.271, 0.5)
+    love.graphics.setColor(0.012, 0.882, 0.271, 0.6)
 
     love.graphics.print("> " .. background.printText, font, 5, love.graphics.getHeight() - font:getHeight() * scale - 5, 0, scale, scale)
     for i = 1, #background.printList do
@@ -137,7 +139,7 @@ end
 function background.die()
     love.graphics.setColor(1, 1, 1, 1 - background.dieTimer / background.maxDT)
     love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
-    love.graphics.setColor(0, 0, 0)
+    love.graphics.setColor(0.04, 0.04, 0.04)
     love.graphics.rectangle("fill",
             0, 0, love.graphics.getWidth(),
             (1 - (background.dieTimer2 - 60) / (background.maxDT2 - 60)) * love.graphics.getHeight() / 2
@@ -151,7 +153,8 @@ function background.die()
     )
     background.song:setVolume((background.dieTimer + background.dieTimer2 - 60) / (background.maxDT + background.maxDT2 - 60))
 
-    if background.dieTimer == background.maxDT then
+    if background.dieTimer == background.maxDT
+    and background.printList[#background.printList] ~= "terminate-player" then
         background.addPrint("terminate-player")
     end
 
@@ -234,7 +237,7 @@ end
 function background.close()
     if background.closeTimer * 60 <= love.graphics.getHeight()
     and background.closeTimer >= 0 then
-        love.graphics.setColor(0, 0, 0, 1)
+        love.graphics.setColor(0.04, 0.04, 0.04, 1)
         love.graphics.rectangle("fill", 0,
                 math.min(love.graphics.getHeight() / 2,
                     background.closeTimer * 30),
@@ -263,7 +266,7 @@ function background.close()
     end
 
     if background.closeTimer < 0 then
-        love.graphics.setColor(0, 0, 0, 1)
+        love.graphics.setColor(0.04, 0.04, 0.04, 1)
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
         love.graphics.setColor(0.982, 0.112, 0.371, 0.2)
         background.scanlineEffect(function()

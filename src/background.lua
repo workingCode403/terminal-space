@@ -8,6 +8,7 @@ background.printText = ""
 background.startTimer = 0
 background.input = false
 background.dieSelect = 1
+background.autoStart = false
 
 background.timer = 0
 
@@ -73,11 +74,15 @@ function background.processCommand(text)
         background.addPrint(tostring(math.random(min, max - 1)))
     elseif text == "get-help" then
         background.addPrint("You can find help at: https://github.com/workingCode403/terminal-space/blob/main/tutorial.md")
+    elseif text == "auto-start" then
+        background.autoStart = true
+        background.startTimer = 0
+        player.visible = true
     end
 end
 
 function background.update()
-    if not background.input then
+    if not background.input and not background.autoStart then
         if background.startTimer == 5 then
             background.addPrint("Terminal Space v0.2 by workingCode403")
         elseif background.startTimer == 35 then
@@ -90,7 +95,21 @@ function background.update()
             background.input = true
         end
     else
-        if background.startTimer == 30 then
+        if background.autoStart and #background.printList < 2 then
+            if background.startTimer == 0 then
+                player.visible = true
+                background.addPrint("Restarting")
+            elseif background.startTimer == 30 then
+                background.printList[1] = "Restarting."
+            elseif background.startTimer == 60 then
+                background.printList[1] = "Restarting.."
+            elseif background.startTimer == 90 then
+                background.printList[1] = "Restarting..."
+            elseif background.startTimer == 120 then
+                player.mode = 1
+                background.song:play()
+            end
+        elseif background.startTimer == 30 then
             player.mode = 1
             background.song:play()
         end

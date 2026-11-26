@@ -29,7 +29,16 @@ end
 
 function love.keypressed(key)
     if key == "escape" then
-        love.event.quit(0)
+        if background.autoStart and player.mode == 0 then
+            background.autoStart = false
+            background.startTimer = 156
+            background.addPrint("Reboot aborted!")
+            background.addPrint("---------------")
+            player.visible = false
+            background.input = true
+        else
+            love.event.quit(0)
+        end
     elseif key == "backspace" and player.mode == 0 and background.input then
         background.printText = background.printText:sub(1,
                 #background.printText - 1

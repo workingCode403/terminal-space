@@ -1,5 +1,5 @@
 # Terminal Space
-A free and open source game made for Hack Club Harvest 2026. Last as long as possible while dodging obstacles in this game \(or you could try guess random numbers for fun\).
+A free and open source game made for Hack Club Harvest 2026. Last as long as possible while dodging obstacles in this game \(or you could try guess random numbers for fun\). Bounce back against the walls when you collide with them.
 
 ## Things I Didn't Make
 - [AGPL-3.0 License](LICENSE) \(The license\)

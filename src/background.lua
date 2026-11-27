@@ -91,12 +91,13 @@ end
 function background.update()
     if not background.input and not background.autoStart then
         if background.startTimer == 5 then
-            background.addPrint("Terminal Space v0.3 by workingCode403")
+            background.addPrint("Terminal Space v0.3.1 by workingCode403")
         elseif background.startTimer == 35 then
             background.addPrint("      Font Used: Courier Prime")
         elseif background.startTimer == 65 then
             background.addPrint(" Song Used: WaxTerK - Space Telecom")
         elseif background.startTimer == 155 then
+            background.addPrint("         Dodge the obstacles")
             background.addPrint(" Enter command 'auto-start' to start")
             background.addPrint("-------------------------------------")
             background.input = true

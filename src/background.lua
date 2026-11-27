@@ -91,7 +91,7 @@ end
 function background.update()
     if not background.input and not background.autoStart then
         if background.startTimer == 5 then
-            background.addPrint("Terminal Space v0.2 by workingCode403")
+            background.addPrint("Terminal Space v0.3 by workingCode403")
         elseif background.startTimer == 35 then
             background.addPrint("      Font Used: Courier Prime")
         elseif background.startTimer == 65 then

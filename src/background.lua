@@ -97,7 +97,7 @@ function background.update()
         elseif background.startTimer == 65 then
             background.addPrint(" Song Used: WaxTerK - Space Telecom")
         elseif background.startTimer == 155 then
-            background.addPrint(" Enter command 'start-game' to start")
+            background.addPrint(" Enter command 'auto-start' to start")
             background.addPrint("-------------------------------------")
             background.input = true
         end

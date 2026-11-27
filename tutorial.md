@@ -14,7 +14,7 @@
 
 ## `auto-start`
 ### Overview
-[`auto-start`](tutorial.md#auto-start) makes it so that, whenever you restart the game, the game will automatically start after 3 seconds. Note that you will be unable to type any command unless you hit `space` key while the game is starting. However doing so will stop the game from automatically starting until you enter this command again.
+[`auto-start`](tutorial.md#auto-start) starts the game and makes it so that, whenever you restart the game, the game will automatically start after 3 seconds. Note that you will be unable to type any command unless you hit `space` key while the game is starting. However doing so will stop the game from automatically starting until you enter this command again.
 ## Syntax
 `auto-start`
 

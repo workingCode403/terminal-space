@@ -1,5 +1,6 @@
 local obstacle = require("obstacle")
 local background = require("background")
+local player = require("player")
 
 local attack = {}
 
@@ -8,8 +9,14 @@ attack.laserPos = {}
 attack.laserAwait = nil
 
 function attack.update(dt)
-    background.timer = background.timer + dt
+    if not player.dead then
+        background.timer = background.timer + dt
+    end
     attack.timer = attack.timer - dt
+
+    if background.goalTime > 0 and background.timer >= background.goalTime then
+        player.mode = 4
+    end
 
     if attack.timer <= 0 then
         local chance = math.random(5)

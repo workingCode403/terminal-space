@@ -11,6 +11,7 @@ background.dieSelect = 1
 background.autoStart = false
 
 background.timer = 0
+background.goalTime = 0
 
 background.maxDT = 30
 background.maxDT2 = 90
@@ -78,6 +79,12 @@ function background.processCommand(text)
         background.autoStart = true
         background.startTimer = 0
         player.visible = true
+    elseif text:sub(1, 9) == "set-time " then
+        if text == "set-time infinite" then
+            background.goalTime = 0
+        else
+            background.goalTime = (tonumber(text:sub(10)) or 0)
+        end
     end
 end
 
@@ -292,6 +299,133 @@ function background.close()
             love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
         end)
         love.graphics.setColor(0.982, 0.112, 0.371, 0.8)
+        love.graphics.rectangle("line", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+    end
+
+    background.closeTimer = background.closeTimer + 1
+
+    if (background.closeTimer - 50) * 60 >= love.graphics.getHeight() then
+        player.dead = false
+        player.mode = 0
+        background.closeTimer = -30
+        if background.exit then
+            love.event.quit(0)
+        end
+    end
+end
+
+function background.win(d2Timer)
+    if d2Timer < 30 then
+        background.song:setVolume(math.max(1 - (d2Timer / 30), 0))
+    end
+
+    love.graphics.setColor(0.04, 0.04, 0.04, 1)
+    love.graphics.rectangle("fill", 0,
+            math.max(0, love.graphics.getHeight() / 2
+                - d2Timer * 30),
+            love.graphics.getWidth(),
+            math.min(love.graphics.getHeight(),
+            d2Timer * 60)
+    )
+    love.graphics.setColor(0.371, 0.212, 0.982, 0.2)
+    background.scanlineEffect(function()
+        love.graphics.rectangle("fill", 0,
+                math.max(0, love.graphics.getHeight() / 2
+                    - d2Timer * 30),
+                love.graphics.getWidth(),
+                math.min(love.graphics.getHeight(),
+                d2Timer * 60)
+        )
+    end)
+    love.graphics.setColor(0.371, 0.212, 0.982, 0.8)
+    love.graphics.rectangle("line", 0,
+            math.max(0, love.graphics.getHeight() / 2
+                - d2Timer * 30),
+            love.graphics.getWidth(),
+            math.min(love.graphics.getHeight(),
+            d2Timer * 60)
+    )
+
+    if d2Timer > 60 then
+        background.song:stop()
+        background.song:setVolume(1)
+
+        local font = love.graphics.newFont("CourierPrime.ttf")
+        local scale = 3
+        love.graphics.print("Program Exited", font,
+                (love.graphics.getWidth() - font:getWidth("Program Exited") * scale ) / 2,
+                love.graphics.getHeight() / 2 - font:getHeight() * scale * 2,
+                0, scale, scale
+        )
+        love.graphics.print("Uptime: " .. background.uptime, font,
+                (love.graphics.getWidth() - font:getWidth("Uptime: " .. background.uptime) * scale * 0.8) / 2,
+                love.graphics.getHeight() / 2 - font:getHeight() * scale * 0.8,
+                0, scale * 0.8, scale * 0.8
+        )
+
+        if background.dieSelect == 1 then
+            love.graphics.print("> Restart", font,
+                    love.graphics.getWidth() / 2 - font:getWidth("> Restart") * scale / 3,
+                    love.graphics.getHeight() / 2 + 10,
+                    0, scale / 1.5, scale / 1.5)
+            love.graphics.print("  Quit", font,
+                    love.graphics.getWidth() / 2 - font:getWidth("> Restart") * scale / 3,
+                    love.graphics.getHeight() / 2 + font:getHeight() * scale + 10,
+                    0, scale / 1.5, scale / 1.5)
+        else
+            love.graphics.print("  Restart", font,
+                    love.graphics.getWidth() / 2 - font:getWidth("> Restart") * scale / 3,
+                    love.graphics.getHeight() / 2 + 10,
+                    0, scale / 1.5, scale / 1.5)
+            love.graphics.print("> Quit", font,
+                    love.graphics.getWidth() / 2 - font:getWidth("> Restart") * scale / 3,
+                    love.graphics.getHeight() / 2 + font:getHeight() * scale + 10,
+                    0, scale / 1.5, scale / 1.5)
+        end
+    end
+
+    background.d2Timer = background.d2Timer + 1
+end
+
+function background.winClose()
+    if background.closeTimer * 60 <= love.graphics.getHeight()
+    and background.closeTimer >= 0 then
+        love.graphics.setColor(0.04, 0.04, 0.04, 1)
+        love.graphics.rectangle("fill", 0,
+                math.min(love.graphics.getHeight() / 2,
+                    background.closeTimer * 30),
+                love.graphics.getWidth(),
+                math.max(0,
+                    love.graphics.getHeight() - background.closeTimer * 60)
+        )
+        love.graphics.setColor(0.371, 0.212, 0.982, 0.2)
+        background.scanlineEffect(function()
+            love.graphics.rectangle("fill", 0,
+                    math.min(love.graphics.getHeight() / 2,
+                        background.closeTimer * 30),
+                    love.graphics.getWidth(),
+                    math.max(0,
+                        love.graphics.getHeight() - background.closeTimer * 60)
+            )
+        end)
+        love.graphics.setColor(0.371, 0.212, 0.982, 0.8)
+        love.graphics.rectangle("line", 0,
+                math.min(love.graphics.getHeight() / 2,
+                    background.closeTimer * 30),
+                love.graphics.getWidth(),
+                math.max(0,
+                    love.graphics.getHeight() - background.closeTimer * 60)
+        )
+    end
+
+    if background.closeTimer < 0 then
+        love.graphics.setColor(0.04, 0.04, 0.04, 1)
+        love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+        love.graphics.setColor(0.371, 0.212, 0.982, 0.2)
+        background.scanlineEffect(function()
+            love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
+        end)
+        love.graphics.setColor(0.371, 0.212, 0.982, 0.8)
         love.graphics.rectangle("line", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
     end
 

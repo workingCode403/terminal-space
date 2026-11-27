@@ -1,6 +1,11 @@
 local player = {}
 
-player.mode = 0
+player.mode = 0 -- gameplay mode
+-- 0 = start
+-- 1 = main
+-- 2 = die
+-- 3 = resetDie
+
 player.visible = false
 player.width = 80
 player.height = 80

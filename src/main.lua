@@ -47,9 +47,9 @@ function love.keypressed(key)
         background.addPrint(background.printText)
         background.processCommand(background.printText)
         background.printText = ""
-    elseif (key == "up" or key == "down") and player.mode == 2 then
+    elseif (key == "up" or key == "down") and (player.mode == 2 or player.mode == 4) then
         background.dieSelect = background.dieSelect * -1
-    elseif key == "return" and player.mode == 2 and not background.restart then
+    elseif key == "return" and (player.mode == 2 or player.mode == 4) and not background.restart then
         if background.dieSelect == -1 then
             Reset()
             background.exit = true
@@ -60,6 +60,12 @@ function love.keypressed(key)
 end
 
 function Reset()
+    if background.dead then
+        player.mode = 3
+    else
+        player.mode = 5
+    end
+
     background.printList = {}
     background.input = false
     background.startTimer = 0
@@ -70,10 +76,10 @@ function Reset()
     background.printText = ""
     background.timer = 0
 
-    player.mode = 3
     player.visible = false
     player.x, player.y = 500, 500
     player.vertMod = 1
+    player.horDir = 0
 
     obstacle.obstacles = {}
     attack.timer = 2
@@ -96,6 +102,10 @@ function love.draw()
     player.draw()
     if player.mode == 3 then
         background.close()
+    elseif player.mode == 4 then
+        background.win(background.d2Timer)
+    elseif player.mode == 5 then
+        background.winClose()
     elseif player.dead then
         background.die()
     end

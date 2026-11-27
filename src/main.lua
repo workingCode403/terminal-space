@@ -92,8 +92,13 @@ end
 function love.draw()
     love.graphics.setColor(0.04, 0.04, 0.04, 1)
     love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
-    
     love.graphics.setBackgroundColor(0,0,0,0)
+
+    if player.mode == 0 then
+        local font = love.graphics.newFont("CourierPrime.ttf")
+        love.graphics.setColor(0.012, 0.882, 0.271, 0.6)
+        love.graphics.print("Enable fullscreen", font, 5, 5, 0, 1.2, 1.2)
+    end
 
     background.draw()
     obstacle.draw()

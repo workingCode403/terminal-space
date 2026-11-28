@@ -26,11 +26,11 @@ function player.move(dt)
         player.collide = false
         player.horDir = 0
 
-        if love.keyboard.isDown("d") then
+        if love.keyboard.isDown("d") or love.keyboard.isDown("right") then
             player.x = player.x + player.speed * dt
             player.horDir = player.horDir + 1
         end
-        if love.keyboard.isDown("a") then
+        if love.keyboard.isDown("a") or love.keyboard.isDown("left") then
             player.x = player.x - player.speed * dt
             player.horDir = player.horDir - 1
         end

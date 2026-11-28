@@ -9,6 +9,9 @@ background.startTimer = 0
 background.input = false
 background.dieSelect = 1
 background.autoStart = false
+background.cmdQueue = {}
+background.cmdQueueNum = 0
+background.cmdCurrent = ""
 
 background.timer = 0
 background.goalTime = 0
@@ -34,6 +37,10 @@ function background.addPrint(text)
 end
 
 function background.processCommand(text)
+    if text ~= background.cmdQueue[#background.cmdQueue] then
+        background.cmdQueue[#background.cmdQueue + 1] = text
+    end
+
     if text == "start-game" then
         background.startTimer = 0
         player.visible = true
@@ -91,7 +98,7 @@ end
 function background.update()
     if not background.input and not background.autoStart then
         if background.startTimer == 5 then
-            background.addPrint("Terminal Space v0.3.1 by workingCode403")
+            background.addPrint("Terminal Space v1.0.0 by workingCode403")
         elseif background.startTimer == 35 then
             background.addPrint("      Font Used: Courier Prime")
         elseif background.startTimer == 65 then
@@ -293,6 +300,10 @@ function background.close()
     end
 
     if background.closeTimer < 0 then
+        if love.mouse.isCursorSupported() then
+            love.mouse.setCursor()
+        end
+
         love.graphics.setColor(0.04, 0.04, 0.04, 1)
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
         love.graphics.setColor(0.982, 0.112, 0.371, 0.2)
@@ -420,6 +431,10 @@ function background.winClose()
     end
 
     if background.closeTimer < 0 then
+        if love.mouse.isCursorSupported() then
+            love.mouse.setCursor()
+        end
+
         love.graphics.setColor(0.04, 0.04, 0.04, 1)
         love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
         love.graphics.setColor(0.371, 0.212, 0.982, 0.2)
